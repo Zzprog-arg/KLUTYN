@@ -78,7 +78,7 @@ app.get("/api/users", auth(JWT_SECRET), (req, res) => {
   const resellerId = req.auth.resellerId;
 
   const rows = db.prepare(`
-    SELECT id, username, expires_at, created_at, updated_at
+    SELECT id, username, password_plain, expires_at, created_at, updated_at
     FROM users
     WHERE reseller_id=?
     ORDER BY expires_at ASC
@@ -118,9 +118,9 @@ app.post("/api/users", auth(JWT_SECRET), (req, res) => {
   const expiresAt = now + add;
 
   const info = db.prepare(`
-    INSERT INTO users (reseller_id, username, password_hash, expires_at, created_at, updated_at)
-    VALUES (?, ?, ?, ?, ?, ?)
-  `).run(resellerId, username, hash, expiresAt, now, now);
+    INSERT INTO users (reseller_id, username, password_hash, password_plain, expires_at, created_at, updated_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+  `).run(resellerId, username, hash, password, expiresAt, now, now);
 
   res.status(201).json({ ok: true, id: info.lastInsertRowid });
 });
@@ -163,11 +163,44 @@ app.post("/api/users/:id/password", auth(JWT_SECRET), (req, res) => {
 
   const info = db.prepare(`
     UPDATE users
-    SET password_hash=?, updated_at=?
+    SET password_hash=?, password_plain=?, updated_at=?
     WHERE id=? AND reseller_id=?
-  `).run(hash, now, id, resellerId);
+  `).run(hash, password, now, id, resellerId);
 
   if (info.changes === 0) return res.status(404).json({ error: "Usuario no encontrado" });
+  res.json({ ok: true });
+});
+
+app.put("/api/users/:id", auth(JWT_SECRET), (req, res) => {
+  const resellerId = req.auth.resellerId;
+  const id = Number(req.params.id);
+  const { username, password } = req.body || {};
+
+  const u = db.prepare("SELECT id FROM users WHERE id=? AND reseller_id=?").get(id, resellerId);
+  if (!u) return res.status(404).json({ error: "Usuario no encontrado" });
+
+  const now = Date.now();
+
+  if (username) {
+    if (!validateUsername(username)) {
+      return res.status(400).json({ error: "Nombre invalido (3-24, letras/numeros/_-)" });
+    }
+    const dup = db.prepare("SELECT id FROM users WHERE reseller_id=? AND username=? AND id!=?").get(resellerId, username, id);
+    if (dup) return res.status(409).json({ error: "Ese nombre de usuario ya existe" });
+
+    db.prepare("UPDATE users SET username=?, updated_at=? WHERE id=? AND reseller_id=?")
+      .run(username, now, id, resellerId);
+  }
+
+  if (password) {
+    if (!validatePassword(password)) {
+      return res.status(400).json({ error: "Contrasena invalida (4-64)" });
+    }
+    const hash = bcrypt.hashSync(password, 10);
+    db.prepare("UPDATE users SET password_hash=?, password_plain=?, updated_at=? WHERE id=? AND reseller_id=?")
+      .run(hash, password, now, id, resellerId);
+  }
+
   res.json({ ok: true });
 });
 

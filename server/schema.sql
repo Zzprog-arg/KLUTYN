@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
   reseller_id INTEGER NOT NULL,
   username TEXT NOT NULL,
   password_hash TEXT NOT NULL,
+  password_plain TEXT NOT NULL DEFAULT '',
   expires_at INTEGER NOT NULL,
   created_at INTEGER NOT NULL,
   updated_at INTEGER NOT NULL,

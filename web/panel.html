@@ -102,6 +102,28 @@
     </div>
   </div>
 
+  <!-- Modal editar credenciales -->
+  <div id="editModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:10;">
+    <div style="max-width:520px; margin:10vh auto; padding:16px;">
+      <div class="card">
+        <div class="cardhead">
+          <div class="cardtitle">Editar Credenciales</div>
+          <button id="closeEdit" class="btn secondary">Cerrar</button>
+        </div>
+        <div class="pad">
+          <div class="label">Nombre de usuario</div>
+          <input id="editUser" class="input" placeholder="usuario123" />
+
+          <div class="label">Contrasena (dejar vacio para no cambiar)</div>
+          <input id="editPass" class="input" placeholder="nueva contrasena" type="password" />
+
+          <button id="doEdit" class="btn footerbtn">Guardar Cambios</button>
+          <div id="editInfo" class="toast" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <script src="./app.js"></script>
 </body>
 </html>
