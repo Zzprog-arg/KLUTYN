@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Klutyn Panel - Login</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"><span>Klutyn<br/>Panel</span></div>
+        <h1>Klutyn Panel</h1>
+      </div>
+      <div class="userpill">
+        <div class="left">
+          <div class="avatar">👤</div>
+          <div class="title">ACCESO RESELLER</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid" style="grid-template-columns:1fr; max-width:520px; margin:0 auto;">
+      <div class="card">
+        <div class="cardhead">
+          <div class="cardtitle">Ingresar</div>
+        </div>
+        <div class="pad">
+          <div class="label">Usuario</div>
+          <input id="u" class="input" placeholder="admin" autocomplete="username" />
+          <div class="label">Contraseña</div>
+          <input id="p" class="input" type="password" placeholder="••••••" autocomplete="current-password" />
+
+          <button id="loginBtn" class="btn footerbtn">Entrar</button>
+          <div id="msg" class="toast" style="display:none;"></div>
+
+          <div class="notice">
+            Tip: el usuario/clave inicial se crea desde variables de entorno (ADMIN_USER / ADMIN_PASS).
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  const msg = (t) => { const el=document.getElementById("msg"); el.style.display="block"; el.textContent=t; };
+  document.getElementById("loginBtn").onclick = async () => {
+    const username = document.getElementById("u").value.trim();
+    const password = document.getElementById("p").value;
+
+    try{
+      const r = await fetch("/api/auth/login", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify({ username, password })
+      });
+      const j = await r.json();
+      if(!r.ok) return msg(j.error || "Error");
+
+      localStorage.setItem("kp_token", j.token);
+      localStorage.setItem("kp_reseller", j.reseller.username);
+      location.href = "/panel.html";
+    }catch(e){
+      msg("No se pudo conectar al servidor");
+    }
+  };
+</script>
+</body>
+</html>
