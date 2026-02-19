@@ -36,6 +36,16 @@ async function initDb(schemaPath) {
     // table may not exist yet on first run, ignore
   }
 
+  // Migration: add phone column if missing
+  try {
+    const [cols] = await pool.execute("SHOW COLUMNS FROM users LIKE 'phone'");
+    if (cols.length === 0) {
+      await pool.execute("ALTER TABLE users ADD COLUMN phone VARCHAR(32) NOT NULL DEFAULT ''");
+    }
+  } catch (e) {
+    // ignore
+  }
+
   return pool;
 }
 

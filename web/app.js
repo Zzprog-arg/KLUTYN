@@ -120,7 +120,23 @@ async function loadUsers() {
     const edit = document.createElement("button");
     edit.className = "smallbtn gray";
     edit.textContent = "Editar";
-    edit.onclick = () => openEdit(u.id, u.username);
+    edit.onclick = () => openEdit(u.id, u.username, u.phone);
+
+    // Boton Avisar: solo si tiene telefono y faltan 7 dias o menos (y no vencido)
+    const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+    if (u.phone && u.remainingMs > 0 && u.remainingMs <= SEVEN_DAYS_MS) {
+      const notify = document.createElement("button");
+      notify.className = "smallbtn warn";
+      notify.textContent = "Avisar";
+      notify.onclick = () => {
+        const daysLeft = Math.ceil(u.remainingMs / (1000 * 60 * 60 * 24));
+        const msg = `Tu cuenta *${u.username}* le faltan *${daysLeft} dia${daysLeft === 1 ? "" : "s"}* para vencer, queres renovar?`;
+        const phone = u.phone.replace(/[^0-9]/g, "");
+        const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+        window.open(waUrl, "_blank");
+      };
+      wrap.appendChild(notify);
+    }
 
     const del = document.createElement("button");
     del.className = "smallbtn danger";
@@ -176,13 +192,15 @@ document.getElementById("closeCreate").onclick = () => window.scrollTo({ top: 0,
 document.getElementById("createBtn").onclick = async () => {
   const username = document.getElementById("newUser").value.trim();
   const password = document.getElementById("newPass").value;
+  const phone = document.getElementById("newPhone").value.trim();
   const duration = getCreateDuration();
 
   try {
-    await api("/api/users", { method: "POST", body: JSON.stringify({ username, password, duration }) });
+    await api("/api/users", { method: "POST", body: JSON.stringify({ username, password, phone, duration }) });
     toast("Usuario creado");
     document.getElementById("newUser").value = "";
     document.getElementById("newPass").value = "";
+    document.getElementById("newPhone").value = "";
     loadUsers();
   } catch (e) { toast(e.message); }
 };
@@ -190,10 +208,11 @@ document.getElementById("createBtn").onclick = async () => {
 // ---- Edit credentials modal ----
 let currentEditId = null;
 
-function openEdit(id, username) {
+function openEdit(id, username, phone) {
   currentEditId = id;
   document.getElementById("editUser").value = username;
   document.getElementById("editPass").value = "";
+  document.getElementById("editPhone").value = phone || "";
   document.getElementById("editInfo").style.display = "none";
   document.getElementById("editModal").style.display = "block";
 }
@@ -206,12 +225,14 @@ document.getElementById("doEdit").onclick = async () => {
   if (!currentEditId) return;
   const username = document.getElementById("editUser").value.trim();
   const password = document.getElementById("editPass").value;
+  const phone = document.getElementById("editPhone").value.trim();
 
   const body = {};
   if (username) body.username = username;
   if (password) body.password = password;
+  body.phone = phone;
 
-  if (!body.username && !body.password) {
+  if (!body.username && !body.password && !body.phone) {
     const info = document.getElementById("editInfo");
     info.textContent = "No hay cambios que guardar";
     info.style.display = "block";

@@ -72,7 +72,7 @@ app.get("/api/users", auth(JWT_SECRET), async (req, res) => {
     const pool = getPool();
 
     const [rows] = await pool.execute(
-      "SELECT id, username, password_plain, expires_at, created_at, updated_at FROM users WHERE reseller_id=? ORDER BY expires_at ASC",
+      "SELECT id, username, password_plain, phone, expires_at, created_at, updated_at FROM users WHERE reseller_id=? ORDER BY expires_at ASC",
       [resellerId]
     );
 
@@ -92,7 +92,7 @@ app.get("/api/users", auth(JWT_SECRET), async (req, res) => {
 app.post("/api/users", auth(JWT_SECRET), async (req, res) => {
   try {
     const resellerId = req.auth.resellerId;
-    const { username, password, duration } = req.body || {};
+    const { username, password, duration, phone } = req.body || {};
 
     if (!validateUsername(username)) {
       return res.status(400).json({ error: "Nombre invalido (3-24, letras/numeros/_-)" });
@@ -116,9 +116,11 @@ app.post("/api/users", auth(JWT_SECRET), async (req, res) => {
     const now = Date.now();
     const expiresAt = now + add;
 
+    const cleanPhone = (phone || "").replace(/[^0-9+]/g, "");
+
     const [result] = await pool.execute(
-      "INSERT INTO users (reseller_id, username, password_hash, password_plain, expires_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
-      [resellerId, username, hash, password, expiresAt, now, now]
+      "INSERT INTO users (reseller_id, username, password_hash, password_plain, phone, expires_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      [resellerId, username, hash, password, cleanPhone, expiresAt, now, now]
     );
 
     res.status(201).json({ ok: true, id: result.insertId });
@@ -193,7 +195,7 @@ app.put("/api/users/:id", auth(JWT_SECRET), async (req, res) => {
   try {
     const resellerId = req.auth.resellerId;
     const id = Number(req.params.id);
-    const { username, password } = req.body || {};
+    const { username, password, phone } = req.body || {};
     const pool = getPool();
 
     const [rows] = await pool.execute(
@@ -203,6 +205,14 @@ app.put("/api/users/:id", auth(JWT_SECRET), async (req, res) => {
     if (rows.length === 0) return res.status(404).json({ error: "Usuario no encontrado" });
 
     const now = Date.now();
+
+    if (typeof phone === "string") {
+      const cleanPhone = phone.replace(/[^0-9+]/g, "");
+      await pool.execute(
+        "UPDATE users SET phone=?, updated_at=? WHERE id=? AND reseller_id=?",
+        [cleanPhone, now, id, resellerId]
+      );
+    }
 
     if (username) {
       if (!validateUsername(username)) {
