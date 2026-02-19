@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS users (
   username VARCHAR(64) NOT NULL,
   password_hash VARCHAR(255) NOT NULL,
   password_plain VARCHAR(255) NOT NULL DEFAULT '',
+  phone VARCHAR(32) NOT NULL DEFAULT '',
   expires_at BIGINT NOT NULL,
   created_at BIGINT NOT NULL,
   updated_at BIGINT NOT NULL,
