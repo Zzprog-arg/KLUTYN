@@ -210,12 +210,11 @@ app.get("/get/:username/:password/lista.m3u", (req, res) => {
     return res.status(404).send("No se encontró lista.m3u en la raíz del proyecto");
   }
 
-  res.setHeader("Content-Type", "application/x-mpegURL; charset=utf-8");
-  // Si querés forzar descarga:
-  // res.setHeader("Content-Disposition", 'attachment; filename="lista.m3u"');
-  res.setHeader("Cache-Control", "no-store");
+    res.setHeader("Content-Type", "application/octet-stream");
+    res.setHeader("Content-Disposition", 'attachment; filename="lista.m3u"');
+    res.setHeader("Cache-Control", "no-store");
+    return res.sendFile(filePath);
 
-  return res.sendFile(filePath);
 });
 
 // =====================
