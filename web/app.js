@@ -69,15 +69,18 @@ async function loadUsers() {
     const tr = document.createElement("tr");
 
     const tdU = document.createElement("td");
+    tdU.setAttribute("data-label", "Usuario");
     tdU.textContent = u.username;
 
     const tdT = document.createElement("td");
+    tdT.setAttribute("data-label", "Tiempo a vencer");
     const badge = document.createElement("span");
     badge.className = "badge" + (u.isExpired ? " expired" : "");
     badge.textContent = fmtRemaining(u.remainingMs);
     tdT.appendChild(badge);
 
     const tdA = document.createElement("td");
+    tdA.setAttribute("data-label", "Acciones");
     const wrap = document.createElement("div");
     wrap.className = "rowactions";
 
