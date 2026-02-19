@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Klutyn Panel</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo"><span>Klutyn<br/>Panel</span></div>
+        <h1>Klutyn Panel</h1>
+      </div>
+
+      <div class="userpill">
+        <div class="left">
+          <div class="avatar">👤</div>
+          <div class="title" id="resellerTitle">USUARIO DEL RESELLER</div>
+        </div>
+        <button id="logoutBtn">Salir</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- LISTA -->
+      <div class="card">
+        <div class="cardhead">
+          <div class="cardtitle">Usuario</div>
+          <button id="openCreate" class="btn">＋ Crear Usuario</button>
+        </div>
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Tiempo a vencer</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+            <!-- rows -->
+          </tbody>
+        </table>
+
+        <div class="pad">
+          <div id="toast" class="toast" style="display:none;"></div>
+        </div>
+      </div>
+
+      <!-- FORM -->
+      <div class="card" id="createCard">
+        <div class="cardhead">
+          <div class="cardtitle">Crear Usuario</div>
+          <button id="closeCreate" class="btn secondary">Cerrar</button>
+        </div>
+        <div class="pad">
+          <div class="label">Nombre de usuario</div>
+          <input id="newUser" class="input" placeholder="usuario123" />
+
+          <div class="label">Contraseña</div>
+          <input id="newPass" class="input" placeholder="contraseña" type="password" />
+
+          <div class="label">Caducidad</div>
+          <div class="pills" id="durPills">
+            <button class="pill active" data-d="1m">1 Mes</button>
+            <button class="pill" data-d="2m">2 Meses</button>
+            <button class="pill" data-d="3m">3 Meses</button>
+            <button class="pill" data-d="1h">1 Hora</button>
+          </div>
+
+          <button id="createBtn" class="btn footerbtn">Crear</button>
+          <div class="notice">
+            El usuario se guarda con contraseña hasheada y fecha de vencimiento. Renovar suma tiempo.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal simple para renovar -->
+  <div id="renewModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,.6);">
+    <div style="max-width:520px; margin:10vh auto; padding:16px;">
+      <div class="card">
+        <div class="cardhead">
+          <div class="cardtitle">Renovar</div>
+          <button id="closeRenew" class="btn secondary">Cerrar</button>
+        </div>
+        <div class="pad">
+          <div class="label">Caducidad</div>
+          <div class="pills" id="renewPills">
+            <button class="pill active" data-d="1m">1 Mes</button>
+            <button class="pill" data-d="2m">2 Meses</button>
+            <button class="pill" data-d="3m">3 Meses</button>
+            <button class="pill" data-d="1h">1 Hora</button>
+          </div>
+          <button id="doRenew" class="btn footerbtn">Renovar</button>
+          <div id="renewInfo" class="toast" style="display:none;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="./app.js"></script>
+</body>
+</html>
