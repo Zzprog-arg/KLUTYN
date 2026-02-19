@@ -258,3 +258,115 @@ body{
   .brand h1{ font-size:32px; }
   .userpill{ min-width: unset; width: 100%; }
 }
+
+@media (max-width: 640px){
+  .container{ width:94vw; margin:14px auto; }
+
+  /* Header: stack vertically */
+  .topbar{
+    flex-direction:column;
+    align-items:stretch;
+    gap:12px;
+    padding:8px 0 16px 0;
+  }
+  .brand{ gap:10px; }
+  .brand h1{ font-size:24px; }
+  .logo{ width:48px; height:48px; border-radius:12px; }
+  .logo::before{ width:36px; height:36px; }
+  .logo span{ font-size:9px; }
+
+  .userpill{
+    min-width:unset;
+    padding:10px 12px;
+    border-radius:14px;
+    gap:10px;
+  }
+  .userpill .title{ font-size:12px; }
+  .avatar{ width:32px; height:32px; border-radius:10px; }
+
+  /* Cards */
+  .cardtitle{ font-size:22px; }
+  .cardhead{ padding:14px 14px 10px 14px; }
+  .pad{ padding:12px 14px 14px 14px; }
+
+  /* Grid single column */
+  .grid{ grid-template-columns:1fr; gap:14px; }
+
+  /* Table becomes cards */
+  .table thead{ display:none; }
+  .table, .table tbody, .table tr, .table td{
+    display:block; width:100%;
+  }
+  .table tr{
+    padding:14px;
+    border-bottom:1px solid var(--line);
+    position:relative;
+  }
+  .table td{
+    padding:4px 0;
+    border-bottom:none;
+    font-size:15px;
+  }
+  .table td::before{
+    content: attr(data-label);
+    display:block;
+    font-size:11px;
+    font-weight:700;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.4px;
+    margin-bottom:2px;
+  }
+  .table td:first-child{
+    font-size:18px;
+  }
+
+  /* Actions: grid 2 cols in mobile */
+  .rowactions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:8px;
+  }
+  .rowactions .smallbtn{
+    width:100%;
+    text-align:center;
+    padding:10px 8px;
+    font-size:13px;
+  }
+  /* Last button (Borrar) full width */
+  .rowactions .smallbtn:last-child{
+    grid-column: 1 / -1;
+  }
+
+  /* Badge */
+  .badge{
+    padding:8px 10px;
+    font-size:14px;
+    min-width:unset;
+  }
+
+  /* Pills */
+  .pills{ gap:8px; }
+  .pill{ padding:8px 12px; font-size:14px; }
+
+  /* Footer button */
+  .footerbtn{ font-size:17px; padding:12px 14px; }
+
+  /* Modals */
+  #renewModal > div,
+  #editModal > div{
+    margin:4vh auto !important;
+    padding:12px !important;
+    max-width:95vw !important;
+  }
+
+  /* Create form button */
+  .btn{ padding:10px 12px; font-size:14px; border-radius:10px; }
+
+  /* Input */
+  .input{ padding:12px; font-size:15px; }
+  .label{ font-size:13px; margin:10px 0 6px 0; }
+  .notice{ font-size:13px; }
+  .toast{ font-size:13px; padding:8px 10px; }
+}
