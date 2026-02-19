@@ -1,22 +1,19 @@
 CREATE TABLE IF NOT EXISTS resellers (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  username TEXT NOT NULL UNIQUE,
-  password_hash TEXT NOT NULL,
-  created_at INTEGER NOT NULL
-);
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(64) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at BIGINT NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE IF NOT EXISTS users (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  reseller_id INTEGER NOT NULL,
-  username TEXT NOT NULL,
-  password_hash TEXT NOT NULL,
-  password_plain TEXT NOT NULL DEFAULT '',
-  expires_at INTEGER NOT NULL,
-  created_at INTEGER NOT NULL,
-  updated_at INTEGER NOT NULL,
-  UNIQUE(reseller_id, username),
-  FOREIGN KEY(reseller_id) REFERENCES resellers(id)
-);
-
-CREATE INDEX IF NOT EXISTS idx_users_reseller ON users(reseller_id);
-CREATE INDEX IF NOT EXISTS idx_users_expires ON users(expires_at);
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  reseller_id INT NOT NULL,
+  username VARCHAR(64) NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  password_plain VARCHAR(255) NOT NULL DEFAULT '',
+  expires_at BIGINT NOT NULL,
+  created_at BIGINT NOT NULL,
+  updated_at BIGINT NOT NULL,
+  UNIQUE KEY uq_reseller_user (reseller_id, username),
+  FOREIGN KEY (reseller_id) REFERENCES resellers(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
