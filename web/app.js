@@ -98,6 +98,27 @@ async function loadUsers() {
       } catch (e) { toast(e.message); }
     };
 
+    const copyLink = document.createElement("button");
+    copyLink.className = "smallbtn gray";
+    copyLink.textContent = "Copiar link";
+    copyLink.onclick = () => {
+      if (!u.password_plain) {
+        toast("Sin contrasena guardada para este usuario");
+        return;
+      }
+      const link = `${location.origin}/get/${u.username}/${u.password_plain}/lista.m3u`;
+      navigator.clipboard.writeText(link).then(() => {
+        toast("Link copiado al portapapeles");
+      }).catch(() => {
+        prompt("Copia este link:", link);
+      });
+    };
+
+    const edit = document.createElement("button");
+    edit.className = "smallbtn gray";
+    edit.textContent = "Editar";
+    edit.onclick = () => openEdit(u.id, u.username);
+
     const del = document.createElement("button");
     del.className = "smallbtn danger";
     del.textContent = "Borrar";
@@ -110,6 +131,8 @@ async function loadUsers() {
       } catch (e) { toast(e.message); }
     };
 
+    wrap.appendChild(copyLink);
+    wrap.appendChild(edit);
     wrap.appendChild(renew);
     wrap.appendChild(reset);
     wrap.appendChild(del);
@@ -161,8 +184,51 @@ document.getElementById("createBtn").onclick = async () => {
   } catch (e) { toast(e.message); }
 };
 
+// ---- Edit credentials modal ----
+let currentEditId = null;
+
+function openEdit(id, username) {
+  currentEditId = id;
+  document.getElementById("editUser").value = username;
+  document.getElementById("editPass").value = "";
+  document.getElementById("editInfo").style.display = "none";
+  document.getElementById("editModal").style.display = "block";
+}
+
+document.getElementById("closeEdit").onclick = () => {
+  document.getElementById("editModal").style.display = "none";
+};
+
+document.getElementById("doEdit").onclick = async () => {
+  if (!currentEditId) return;
+  const username = document.getElementById("editUser").value.trim();
+  const password = document.getElementById("editPass").value;
+
+  const body = {};
+  if (username) body.username = username;
+  if (password) body.password = password;
+
+  if (!body.username && !body.password) {
+    const info = document.getElementById("editInfo");
+    info.textContent = "No hay cambios que guardar";
+    info.style.display = "block";
+    return;
+  }
+
+  try {
+    await api(`/api/users/${currentEditId}`, { method: "PUT", body: JSON.stringify(body) });
+    toast("Credenciales actualizadas");
+    document.getElementById("editModal").style.display = "none";
+    loadUsers();
+  } catch (e) {
+    const info = document.getElementById("editInfo");
+    info.textContent = e.message;
+    info.style.display = "block";
+  }
+};
+
 loadUsers().catch(e => {
-  toast("Sesión inválida, volvé a login");
+  toast("Sesion invalida, volve a login");
   localStorage.removeItem("kp_token");
   setTimeout(() => location.href = "/", 1000);
 });
