@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Panel Códigos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body{font-family:Arial;max-width:980px;margin:26px auto;padding:0 12px}
+    .card{border:1px solid #ddd;border-radius:12px;padding:14px;margin:12px 0}
+    input,button{padding:10px;border-radius:8px;border:1px solid #ccc}
+    button{cursor:pointer}
+    textarea{width:100%;font-size:16px}
+    table{width:100%;border-collapse:collapse}
+    th,td{border-bottom:1px solid #eee;padding:8px;text-align:left}
+    .used{color:#b00;font-weight:700}
+    .free{color:#070;font-weight:700}
+  </style>
+</head>
+<body>
+  <h1>Panel de Códigos</h1>
+
+  <div class="card">
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <label>ADMIN_KEY (si usás):</label>
+      <input id="key" placeholder="(vacío si no hay)" style="min-width:220px">
+    </div>
+  </div>
+
+  <div class="card">
+    <form id="genForm" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <label>Cantidad</label>
+      <input id="qty" type="number" value="10" min="1" max="200">
+      <label>Largo</label>
+      <input id="len" type="number" value="4" min="4" max="12">
+      <button type="submit">Generar</button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h3>Generados</h3>
+    <textarea id="out" rows="6" placeholder="Acá aparecen..."></textarea>
+  </div>
+
+  <div class="card">
+    <h3>Últimos 200</h3>
+    <div id="status">Cargando...</div>
+    <table>
+      <thead>
+        <tr><th>Código</th><th>Estado</th><th>Creado</th><th>Usado</th></tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <script src="./app.js"></script>
+  <script>
+    Panel.init();
+  </script>
+</body>
+</html>
