@@ -6,68 +6,44 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const app = express();
-app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Helmet con CSP que NO bloquea scripts externos (self)
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      useDefaults: true,
+      directives: {
+        "script-src": ["'self'"], // OK porque usamos .js externos
+      },
+    },
+  })
+);
+
 const PORT = process.env.PORT || 3000;
 
-// URL DIRECTA al APK (GitHub Releases recomendado)
+// ✅ Tu DB URL (ponela en Render env var, NO en GitHub)
+const DATABASE_URL = process.env.DATABASE_URL;
+
+// ✅ APK directo (GitHub Releases)
 const APK_URL =
   process.env.APK_URL ||
   "https://github.com/Zzprog-arg/KLUTYN/releases/download/v1.0.0/app.apk";
 
-// Tu conexión MySQL (NO la subas a GitHub, va en Render env vars)
-const DATABASE_URL = process.env.DATABASE_URL;
+// ✅ Clave del panel (solo para VER el código)
+const PANEL_PASSWORD = process.env.PANEL_PASSWORD || "1234";
 
-// Panel key opcional (si lo dejás vacío, no pide)
-const ADMIN_KEY = process.env.ADMIN_KEY || ""; // ej: "1234"
+// Largo del código actual
+const CODE_LENGTH = Number(process.env.CODE_LENGTH || 4);
 
-// Config códigos
-const CODE_LENGTH = Number(process.env.CODE_LENGTH || 4); // 4 si querés
-const MAX_QTY = Number(process.env.MAX_QTY || 200);
-
-// --- paths ---
+// Paths
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// --- static ---
 app.use("/", express.static(path.join(__dirname, "public"), { extensions: ["html"] }));
 
 let pool;
-
-// ================== DB ==================
-async function initDb() {
-  if (!DATABASE_URL) {
-    throw new Error("Falta env var DATABASE_URL");
-  }
-  pool = mysql.createPool({
-    uri: DATABASE_URL,
-    waitForConnections: true,
-    connectionLimit: 5,
-    queueLimit: 0
-  });
-
-  // Crear tabla si no existe
-  const sqlPath = path.join(__dirname, "db.sql");
-  const schema = fs.readFileSync(sqlPath, "utf8");
-  const conn = await pool.getConnection();
-  try {
-    // db.sql puede tener varios statements
-    for (const stmt of schema.split(";")) {
-      const s = stmt.trim();
-      if (s) await conn.query(s);
-    }
-  } finally {
-    conn.release();
-  }
-  console.log("DB OK");
-}
-
-function adminOk(req) {
-  if (!ADMIN_KEY) return true;
-  return (req.query.key || req.headers["x-admin-key"] || "") === ADMIN_KEY;
-}
 
 function genNumericCode(len) {
   let s = "";
@@ -75,127 +51,111 @@ function genNumericCode(len) {
   return s;
 }
 
-async function codeExists(code) {
-  const [rows] = await pool.query("SELECT code FROM codes WHERE code = ? LIMIT 1", [code]);
-  return rows.length > 0;
+async function initDb() {
+  if (!DATABASE_URL) throw new Error("Falta env var DATABASE_URL");
+
+  pool = mysql.createPool({
+    uri: DATABASE_URL,
+    waitForConnections: true,
+    connectionLimit: 5,
+  });
+
+  const schema = fs.readFileSync(path.join(__dirname, "db.sql"), "utf8");
+  const conn = await pool.getConnection();
+  try {
+    for (const part of schema.split(";")) {
+      const stmt = part.trim();
+      if (stmt) await conn.query(stmt);
+    }
+
+    // asegurar que exista current_code
+    const [rows] = await conn.query("SELECT v FROM settings WHERE k='current_code' LIMIT 1");
+    if (rows.length === 0) {
+      const first = genNumericCode(CODE_LENGTH);
+      await conn.query("INSERT INTO settings(k,v) VALUES('current_code',?)", [first]);
+      console.log("Init current_code:", first);
+    }
+  } finally {
+    conn.release();
+  }
+  console.log("DB OK");
 }
 
-// ================== API ADMIN ==================
-// Generar códigos
-app.post("/api/admin/generate", async (req, res) => {
+// ===================== PANEL (solo ver) =====================
+// Autenticación simple por header o query (?p=)
+function panelAuthOk(req) {
+  const p = req.query.p || req.headers["x-panel-password"] || "";
+  return String(p) === String(PANEL_PASSWORD);
+}
+
+// Devuelve el código actual (solo panel)
+app.get("/api/panel/current", async (req, res) => {
   try {
-    if (!adminOk(req)) return res.status(401).json({ error: "No autorizado" });
+    if (!panelAuthOk(req)) return res.status(401).json({ error: "No autorizado" });
 
-    let qty = parseInt(req.body.qty ?? 10, 10);
-    qty = Math.max(1, Math.min(MAX_QTY, qty));
+    const [rows] = await pool.query("SELECT v, updated_at FROM settings WHERE k='current_code' LIMIT 1");
+    res.json({ ok: true, code: rows?.[0]?.v || "", updated_at: rows?.[0]?.updated_at || null });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ error: "Error servidor" });
+  }
+});
 
-    const len = Math.max(4, Math.min(12, parseInt(req.body.len ?? CODE_LENGTH, 10)));
+// ===================== REDEEM (rota código) =====================
+app.post("/api/redeem", async (req, res) => {
+  const ip = (req.headers["x-forwarded-for"] || "").split(",")[0].trim() || req.socket.remoteAddress || null;
+  const ua = req.headers["user-agent"] || null;
 
-    const codes = [];
+  try {
+    const code = String(req.body.code || "").trim();
+    const re = new RegExp(`^\\d{${CODE_LENGTH}}$`);
+    if (!re.test(code)) return res.status(400).json({ error: "Código inválido" });
 
     const conn = await pool.getConnection();
     try {
       await conn.beginTransaction();
 
-      for (let i = 0; i < qty; i++) {
-        let code;
-        // Evitar colisiones
-        do {
-          code = genNumericCode(len);
-          const [rows] = await conn.query("SELECT code FROM codes WHERE code=? LIMIT 1", [code]);
-          if (rows.length === 0) break;
-        } while (true);
+      // lock del row para evitar doble canje simultáneo
+      const [rows] = await conn.query(
+        "SELECT v FROM settings WHERE k='current_code' LIMIT 1 FOR UPDATE"
+      );
+      const current = rows?.[0]?.v;
 
-        await conn.query("INSERT INTO codes(code, used) VALUES(?, 0)", [code]);
-        codes.push(code);
+      if (!current) {
+        await conn.rollback();
+        return res.status(500).json({ error: "Código no inicializado" });
       }
 
+      if (code !== current) {
+        await conn.rollback();
+        return res.status(401).json({ error: "Código incorrecto" });
+      }
+
+      // rotar a nuevo código (distinto al actual)
+      let next;
+      do { next = genNumericCode(CODE_LENGTH); } while (next === current);
+
+      await conn.query("UPDATE settings SET v=? WHERE k='current_code'", [next]);
+      await conn.query("INSERT INTO redeems(code_used, ip, ua) VALUES(?,?,?)", [code, ip, ua]);
+
       await conn.commit();
+
+      // ok: redirigir al APK
+      res.json({ ok: true, redirect: APK_URL });
     } catch (e) {
       await conn.rollback();
       throw e;
     } finally {
       conn.release();
     }
-
-    res.json({ ok: true, qty: codes.length, codes });
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: "Error servidor" });
   }
 });
 
-// Listar últimos
-app.get("/api/admin/list", async (req, res) => {
-  try {
-    if (!adminOk(req)) return res.status(401).json({ error: "No autorizado" });
-
-    const [rows] = await pool.query(
-      "SELECT code, used, created_at, used_at FROM codes ORDER BY created_at DESC LIMIT 200"
-    );
-    res.json({ ok: true, rows });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "Error servidor" });
-  }
-});
-
-// ================== REDEEM ==================
-// Canje JSON (para tu JS)
-app.post("/api/redeem", async (req, res) => {
-  try {
-    const code = String(req.body.code || "").trim();
-
-    // Acepta 4–12 dígitos
-    if (!/^\d{4,12}$/.test(code)) return res.status(400).json({ error: "Código inválido" });
-
-    // Buscar
-    const [rows] = await pool.query("SELECT used FROM codes WHERE code=? LIMIT 1", [code]);
-    if (rows.length === 0) return res.status(404).json({ error: "Código inexistente" });
-    if (rows[0].used) return res.status(409).json({ error: "Código ya usado" });
-
-    // Marcar como usado de forma atómica
-    const [upd] = await pool.query(
-      "UPDATE codes SET used=1, used_at=NOW() WHERE code=? AND used=0",
-      [code]
-    );
-    if (upd.affectedRows === 0) return res.status(409).json({ error: "Código ya usado" });
-
-    res.json({ ok: true, redirect: APK_URL });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "Error servidor" });
-  }
-});
-
-// Canje por form clásico + redirect (por si lo querés)
-app.post("/redeem", async (req, res) => {
-  try {
-    const code = String(req.body.code || "").trim();
-    if (!/^\d{4,12}$/.test(code)) return res.status(400).send("Código inválido");
-
-    const [rows] = await pool.query("SELECT used FROM codes WHERE code=? LIMIT 1", [code]);
-    if (rows.length === 0) return res.status(404).send("Código inexistente");
-    if (rows[0].used) return res.status(409).send("Código ya usado");
-
-    const [upd] = await pool.query(
-      "UPDATE codes SET used=1, used_at=NOW() WHERE code=? AND used=0",
-      [code]
-    );
-    if (upd.affectedRows === 0) return res.status(409).send("Código ya usado");
-
-    res.redirect(302, APK_URL);
-  } catch (e) {
-    console.error(e);
-    res.status(500).send("Error servidor");
-  }
-});
-
-// ================== BOOT ==================
 initDb()
-  .then(() => {
-    app.listen(PORT, () => console.log("OK on", PORT));
-  })
+  .then(() => app.listen(PORT, () => console.log("OK on", PORT)))
   .catch((e) => {
     console.error("Fallo initDb:", e.message);
     process.exit(1);
