@@ -2,56 +2,40 @@
 <html lang="es">
 <head>
   <meta charset="utf-8">
-  <title>Panel Códigos</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel KLUTYN</title>
   <style>
-    body{font-family:Arial;max-width:980px;margin:26px auto;padding:0 12px}
-    .card{border:1px solid #ddd;border-radius:12px;padding:14px;margin:12px 0}
-    input,button{padding:10px;border-radius:8px;border:1px solid #ccc}
-    button{cursor:pointer}
-    textarea{width:100%;font-size:16px}
-    table{width:100%;border-collapse:collapse}
-    th,td{border-bottom:1px solid #eee;padding:8px;text-align:left}
-    .used{color:#b00;font-weight:700}
-    .free{color:#070;font-weight:700}
+    body{font-family:Arial;background:#0b0b0b;color:#fff;min-height:100vh;display:flex;align-items:center;justify-content:center;margin:0}
+    .box{width:min(720px,92vw);background:#141414;border:1px solid #2a2a2a;border-radius:18px;padding:18px}
+    input,button{padding:12px;border-radius:10px;border:1px solid #333;background:#0f0f0f;color:#fff}
+    button{background:#1f6feb;border:0;font-weight:800;cursor:pointer}
+    .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .code{font-size:52px;font-weight:900;letter-spacing:10px;text-align:center;margin:18px 0}
+    .muted{color:#bdbdbd}
+    .err{color:#ff6b6b}
   </style>
 </head>
 <body>
-  <h1>Panel de Códigos</h1>
+  <div class="box">
+    <h2>Panel (ver código actual)</h2>
 
-  <div class="card">
-    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-      <label>ADMIN_KEY (si usás):</label>
-      <input id="key" placeholder="(vacío si no hay)" style="min-width:220px">
+    <div class="row">
+      <input id="pass" placeholder="Contraseña panel" type="password" style="flex:1;min-width:220px">
+      <button id="btn">Entrar</button>
+    </div>
+
+    <div id="msg" class="muted" style="margin-top:10px"></div>
+
+    <div id="screen" style="display:none">
+      <div class="code" id="code">----</div>
+      <div class="muted">Se actualiza solo cuando alguien canjea correctamente.</div>
+      <div class="muted" style="margin-top:6px">Última actualización: <span id="upd">-</span></div>
+      <div class="row" style="margin-top:14px">
+        <button id="refresh">Actualizar</button>
+      </div>
     </div>
   </div>
 
-  <div class="card">
-    <form id="genForm" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-      <label>Cantidad</label>
-      <input id="qty" type="number" value="10" min="1" max="200">
-      <label>Largo</label>
-      <input id="len" type="number" value="4" min="4" max="12">
-      <button type="submit">Generar</button>
-    </form>
-  </div>
-
-  <div class="card">
-    <h3>Generados</h3>
-    <textarea id="out" rows="6" placeholder="Acá aparecen..."></textarea>
-  </div>
-
-  <div class="card">
-    <h3>Últimos 200</h3>
-    <div id="status">Cargando...</div>
-    <table>
-      <thead>
-        <tr><th>Código</th><th>Estado</th><th>Creado</th><th>Usado</th></tr>
-      </thead>
-      <tbody id="tbody"></tbody>
-    </table>
-  </div>
-
-<script src="./app.js" defer></script>
+  <script src="./panel.js" defer></script>
 </body>
 </html>
