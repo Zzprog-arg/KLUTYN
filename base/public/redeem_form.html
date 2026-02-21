@@ -32,7 +32,55 @@
     .pin-box.focused::after{ background:#1f6feb; }
 
     .msg{ margin-top:14px; min-height:22px; text-align:center; font-size:16px; color:#ff6b6b; }
-    .hidden-input{ position:absolute; opacity:0; pointer-events:none; width:1px;height:1px; }
+
+    /* ✅ CAMBIO MÍNIMO: sigue “oculto”, pero NO con opacity:0 (para que Android TV muestre teclado) */
+    .hidden-input{
+      position:fixed;
+      left:-10000px; top:0;          /* fuera de pantalla */
+      width:240px; height:48px;      /* tamaño real ayuda a algunos teclados */
+      opacity:0.01;                  /* casi invisible, pero no 0 */
+      pointer-events:none;
+      background:transparent;
+      color:transparent;
+      border:0;
+    }
+
+    /* ✅ TECLADO EN PANTALLA (nuevo) */
+    .keypad{
+      margin:18px auto 0 auto;
+      width:min(420px, 100%);
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:12px;
+    }
+    .kbtn{
+      height:64px;
+      border-radius:14px;
+      border:2px solid #303030;
+      background:#0f0f0f;
+      color:#fff;
+      font-size:22px;
+      font-weight:800;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      user-select:none;
+      outline:none;
+    }
+    .kbtn:active{ transform: scale(0.99); }
+    .kbtn:focus{
+      border-color:#1f6feb;
+      box-shadow: 0 0 0 4px rgba(31,111,235,.25);
+    }
+    .kbtn.secondary{
+      font-size:18px;
+      font-weight:700;
+      color:#ffb4b4;
+    }
+    .kbtn.wide{
+      grid-column: span 2;
+    }
   </style>
 </head>
 <body>
@@ -40,12 +88,41 @@
     <h1>Ingresá tu código</h1>
     <p>Escribí los 4 números con el control remoto. Se enviará automáticamente al completar.</p>
 
-    <input class="hidden-input" id="realInput" inputmode="numeric" autocomplete="one-time-code" />
+    <!-- ✅ input “real” para disparar teclado -->
+    <input
+      class="hidden-input"
+      id="realInput"
+      type="tel"
+      inputmode="numeric"
+      pattern="[0-9]*"
+      autocomplete="one-time-code"
+      aria-label="Ingresar código"
+    />
+
     <div class="pin-row" id="pinRow" aria-label="Código de 4 dígitos">
       <div class="pin-box" data-idx="0"><div class="pin-digit" id="d0"></div></div>
       <div class="pin-box" data-idx="1"><div class="pin-digit" id="d1"></div></div>
       <div class="pin-box" data-idx="2"><div class="pin-digit" id="d2"></div></div>
       <div class="pin-box" data-idx="3"><div class="pin-digit" id="d3"></div></div>
+    </div>
+
+    <!-- ✅ teclado en pantalla (nuevo) -->
+    <div class="keypad" id="keypad" aria-label="Teclado numérico">
+      <button class="kbtn" data-k="1" type="button">1</button>
+      <button class="kbtn" data-k="2" type="button">2</button>
+      <button class="kbtn" data-k="3" type="button">3</button>
+
+      <button class="kbtn" data-k="4" type="button">4</button>
+      <button class="kbtn" data-k="5" type="button">5</button>
+      <button class="kbtn" data-k="6" type="button">6</button>
+
+      <button class="kbtn" data-k="7" type="button">7</button>
+      <button class="kbtn" data-k="8" type="button">8</button>
+      <button class="kbtn" data-k="9" type="button">9</button>
+
+      <button class="kbtn secondary" data-k="del" type="button">Borrar</button>
+      <button class="kbtn" data-k="0" type="button">0</button>
+      <button class="kbtn secondary" data-k="clr" type="button">Limpiar</button>
     </div>
 
     <div class="msg" id="msg"></div>
