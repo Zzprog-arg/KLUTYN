@@ -1,73 +1,33 @@
 const LEN = 4;
 
 const box = document.getElementById("box");
+const pinWrap = document.getElementById("pinWrap");
 const realInput = document.getElementById("realInput");
 const msg = document.getElementById("msg");
 
-let digits = ["", "", "", ""];
-let cursor = 0;
 let submitting = false;
-
-function render() {
-  for (let i = 0; i < LEN; i++) {
-    document.getElementById("d" + i).textContent = digits[i];
-    const el = document.querySelector(`.pin-box[data-idx="${i}"]`);
-    el.classList.toggle("focused", i === cursor);
-  }
-}
 
 function setMessage(t) {
   msg.textContent = t || "";
 }
 
-function hardFocus() {
-  // ✅ Para Android TV: enfocar el input “real” primero para abrir teclado
-  try { realInput.focus({ preventScroll: true }); } catch {}
-  try { box.focus({ preventScroll: true }); } catch {}
+function renderFromValue(v) {
+  const s = (v || "").replace(/\D/g, "").slice(0, LEN);
+  for (let i = 0; i < LEN; i++) {
+    document.getElementById("d" + i).textContent = s[i] || "";
+  }
+  return s;
 }
 
 function reset() {
-  digits = ["", "", "", ""];
-  cursor = 0;
   submitting = false;
-  // ✅ limpiar también el input real (si el teclado escribió ahí)
-  try { realInput.value = ""; } catch {}
-  render();
-  hardFocus();
+  realInput.value = "";
+  renderFromValue("");
+  setMessage("");
 }
 
-function addDigit(n) {
+async function validateAndGo(code) {
   if (submitting) return;
-  if (cursor >= LEN) return;
-  digits[cursor] = String(n);
-  cursor = Math.min(LEN - 1, cursor + 1);
-  render();
-
-  if (digits.join("").length === LEN) validateAndGo();
-}
-
-function backspaceLike() {
-  if (submitting) return;
-
-  if (digits[cursor]) {
-    digits[cursor] = "";
-  } else if (cursor > 0) {
-    cursor--;
-    digits[cursor] = "";
-  }
-  render();
-}
-
-function moveLeftAndDelete() {
-  if (submitting) return;
-  if (cursor > 0) cursor--;
-  digits[cursor] = "";
-  render();
-}
-
-async function validateAndGo() {
-  if (submitting) return;
-  const code = digits.join("");
   if (!/^\d{4}$/.test(code)) return;
 
   submitting = true;
@@ -89,78 +49,65 @@ async function validateAndGo() {
     }
 
     window.location.href = j.redirect;
-  } catch (e) {
+  } catch {
     setMessage("Error de conexión");
     submitting = false;
   }
 }
 
-// Captura teclas en DOCUMENT (más compatible TV)
-document.addEventListener("keydown", (e) => {
-  if (e.key >= "0" && e.key <= "9") {
-    e.preventDefault();
-    addDigit(e.key);
-    return;
-  }
+/* ✅ Foco “con gesto del usuario” = más chances de que se abra el teclado */
+function openKeyboard() {
+  try { realInput.focus({ preventScroll: true }); } catch { realInput.focus(); }
+}
 
-  if (e.key === "Backspace" || e.key === "Delete") {
-    e.preventDefault();
-    backspaceLike();
-    return;
-  }
+/* Cuando el input toma foco, marcamos estado visual */
+realInput.addEventListener("focus", () => pinWrap.classList.add("focused"));
+realInput.addEventListener("blur",  () => pinWrap.classList.remove("focused"));
 
-  if (e.key === "ArrowLeft") {
-    e.preventDefault();
-    moveLeftAndDelete();
-    return;
-  }
-
-  if (e.key === "Enter") {
-    e.preventDefault();
-    if (digits.join("").length === LEN) validateAndGo();
-    return;
-  }
-});
-
-// Por si el TV abre teclado y escribe en input
+/* ✅ Entrada principal: lo que escribe el teclado del TV Box */
 realInput.addEventListener("input", () => {
   if (submitting) return;
-  const v = (realInput.value || "").replace(/\D/g, "").slice(0, LEN);
-  for (let i = 0; i < LEN; i++) digits[i] = v[i] || "";
-  cursor = Math.min(LEN - 1, v.length ? v.length - 1 : 0);
-  render();
-  if (v.length === LEN) validateAndGo();
+
+  const code = renderFromValue(realInput.value);
+
+  // mantener el value saneado (solo dígitos, max 4)
+  if (realInput.value !== code) realInput.value = code;
+
+  if (code.length === LEN) validateAndGo(code);
 });
 
-// Click/tap en pin boxes
-document.getElementById("pinRow").addEventListener("click", (e) => {
-  const boxEl = e.target.closest(".pin-box");
-  if (!boxEl) return;
-  cursor = Number(boxEl.dataset.idx || 0);
-  render();
-  hardFocus();
+/* ✅ Permitir abrir teclado con OK/Enter desde remoto */
+box.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    // algunos remotos mandan Enter para “OK”
+    openKeyboard();
+  }
 });
 
-// ✅ TECLADO EN PANTALLA (nuevo)
-const keypad = document.getElementById("keypad");
-function handleKeypadPress(target) {
-  const b = target.closest("[data-k]");
-  if (!b) return;
-  const k = b.dataset.k;
+/* ✅ Click en la zona = foco al input */
+pinWrap.addEventListener("click", openKeyboard);
+box.addEventListener("click", () => {
+  // click en la caja -> abre teclado
+  openKeyboard();
+});
 
-  if (k >= "0" && k <= "9") addDigit(k);
-  else if (k === "del") backspaceLike();
-  else if (k === "clr") reset();
+/* ✅ Borrado extra con teclas del remoto (si las manda).
+   OJO: no bloqueamos números para no romper el IME. */
+document.addEventListener("keydown", (e) => {
+  if (submitting) return;
 
-  hardFocus(); // mantener teclado abierto
-}
-keypad.addEventListener("click", (e) => handleKeypadPress(e.target));
-// algunos decos: touchstart responde mejor que click
-keypad.addEventListener("touchstart", (e) => {
-  handleKeypadPress(e.target);
-}, { passive: true });
+  if (e.key === "Backspace" || e.key === "Delete") {
+    // dejar que el input maneje borrado, pero aseguramos render
+    // (algunos remotos no modifican el value si no hay foco)
+    if (document.activeElement !== realInput) openKeyboard();
+    // no preventDefault: el IME/ input debe borrar
+    setTimeout(() => renderFromValue(realInput.value), 0);
+  }
+});
 
-// Reforzar foco siempre que vuelva a la página o se toque el contenedor
-box.addEventListener("click", hardFocus);
-window.addEventListener("load", () => { render(); hardFocus(); });
-setInterval(() => { if (!submitting) hardFocus(); }, 1500);
+/* Inicial */
+window.addEventListener("load", () => {
+  renderFromValue("");
+  // NO auto-focus fuerte: muchos TV Box no abren teclado sin gesto.
+  // Dejamos listo para que con OK/Enter se abra.
+});
