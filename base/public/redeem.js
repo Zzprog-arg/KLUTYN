@@ -21,7 +21,7 @@ function setMessage(t) {
 }
 
 function hardFocus() {
-  // clave para Android TV: intentar foco en input invisible y en contenedor
+  // ✅ Para Android TV: enfocar el input “real” primero para abrir teclado
   try { realInput.focus({ preventScroll: true }); } catch {}
   try { box.focus({ preventScroll: true }); } catch {}
 }
@@ -30,6 +30,8 @@ function reset() {
   digits = ["", "", "", ""];
   cursor = 0;
   submitting = false;
+  // ✅ limpiar también el input real (si el teclado escribió ahí)
+  try { realInput.value = ""; } catch {}
   render();
   hardFocus();
 }
@@ -47,7 +49,6 @@ function addDigit(n) {
 function backspaceLike() {
   if (submitting) return;
 
-  // borra donde estés; si está vacío, retrocede y borra
   if (digits[cursor]) {
     digits[cursor] = "";
   } else if (cursor > 0) {
@@ -83,7 +84,6 @@ async function validateAndGo() {
 
     if (!r.ok) {
       setMessage(j.error || "Código incorrecto");
-      // reset rápido para reintentar
       setTimeout(() => reset(), 200);
       return;
     }
@@ -97,28 +97,24 @@ async function validateAndGo() {
 
 // Captura teclas en DOCUMENT (más compatible TV)
 document.addEventListener("keydown", (e) => {
-  // números
   if (e.key >= "0" && e.key <= "9") {
     e.preventDefault();
     addDigit(e.key);
     return;
   }
 
-  // borrar (backspace/delete)
   if (e.key === "Backspace" || e.key === "Delete") {
     e.preventDefault();
     backspaceLike();
     return;
   }
 
-  // flecha izq = borrar retrocediendo (como pediste)
   if (e.key === "ArrowLeft") {
     e.preventDefault();
     moveLeftAndDelete();
     return;
   }
 
-  // enter por si un remoto manda enter
   if (e.key === "Enter") {
     e.preventDefault();
     if (digits.join("").length === LEN) validateAndGo();
@@ -136,7 +132,7 @@ realInput.addEventListener("input", () => {
   if (v.length === LEN) validateAndGo();
 });
 
-// Click/tap
+// Click/tap en pin boxes
 document.getElementById("pinRow").addEventListener("click", (e) => {
   const boxEl = e.target.closest(".pin-box");
   if (!boxEl) return;
@@ -144,6 +140,25 @@ document.getElementById("pinRow").addEventListener("click", (e) => {
   render();
   hardFocus();
 });
+
+// ✅ TECLADO EN PANTALLA (nuevo)
+const keypad = document.getElementById("keypad");
+function handleKeypadPress(target) {
+  const b = target.closest("[data-k]");
+  if (!b) return;
+  const k = b.dataset.k;
+
+  if (k >= "0" && k <= "9") addDigit(k);
+  else if (k === "del") backspaceLike();
+  else if (k === "clr") reset();
+
+  hardFocus(); // mantener teclado abierto
+}
+keypad.addEventListener("click", (e) => handleKeypadPress(e.target));
+// algunos decos: touchstart responde mejor que click
+keypad.addEventListener("touchstart", (e) => {
+  handleKeypadPress(e.target);
+}, { passive: true });
 
 // Reforzar foco siempre que vuelva a la página o se toque el contenedor
 box.addEventListener("click", hardFocus);
