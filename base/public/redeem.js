@@ -1,3 +1,4 @@
+// redeem.js
 const LEN = 4;
 
 const box = document.getElementById("box");
@@ -11,19 +12,27 @@ function setMessage(t) {
   msg.textContent = t || "";
 }
 
-function renderFromValue(v) {
-  const s = (v || "").replace(/\D/g, "").slice(0, LEN);
+function sanitize(v) {
+  return (v || "").replace(/\D/g, "").slice(0, LEN);
+}
+
+function renderDigits(code) {
   for (let i = 0; i < LEN; i++) {
-    document.getElementById("d" + i).textContent = s[i] || "";
+    document.getElementById("d" + i).textContent = code[i] || "";
   }
+}
+
+function setCode(code) {
+  const s = sanitize(code);
+  realInput.value = s;
+  renderDigits(s);
   return s;
 }
 
 function reset() {
   submitting = false;
-  realInput.value = "";
-  renderFromValue("");
   setMessage("");
+  setCode("");
 }
 
 async function validateAndGo(code) {
@@ -55,59 +64,98 @@ async function validateAndGo(code) {
   }
 }
 
-/* ✅ Foco “con gesto del usuario” = más chances de que se abra el teclado */
+/* =========================
+   TECLADO NATIVO: BEST EFFORT
+   ========================= */
+
 function openKeyboard() {
   try { realInput.focus({ preventScroll: true }); } catch { realInput.focus(); }
 }
 
-/* Cuando el input toma foco, marcamos estado visual */
+function attemptAutoKeyboard() {
+  // Intento escalonado: algunos TV Box ignoran focus inmediato
+  openKeyboard();
+  requestAnimationFrame(() => openKeyboard());
+  setTimeout(() => openKeyboard(), 200);
+  setTimeout(() => openKeyboard(), 600);
+  setTimeout(() => openKeyboard(), 1200);
+}
+
+// Visual de foco
 realInput.addEventListener("focus", () => pinWrap.classList.add("focused"));
 realInput.addEventListener("blur",  () => pinWrap.classList.remove("focused"));
 
-/* ✅ Entrada principal: lo que escribe el teclado del TV Box */
+// Entrada principal (lo que escriba el IME nativo)
 realInput.addEventListener("input", () => {
   if (submitting) return;
-
-  const code = renderFromValue(realInput.value);
-
-  // mantener el value saneado (solo dígitos, max 4)
+  const code = sanitize(realInput.value);
   if (realInput.value !== code) realInput.value = code;
-
+  renderDigits(code);
   if (code.length === LEN) validateAndGo(code);
 });
 
-/* ✅ Permitir abrir teclado con OK/Enter desde remoto */
-box.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    // algunos remotos mandan Enter para “OK”
-    openKeyboard();
-  }
-});
-
-/* ✅ Click en la zona = foco al input */
+// Click/OK/Enter para fallback
 pinWrap.addEventListener("click", openKeyboard);
-box.addEventListener("click", () => {
-  // click en la caja -> abre teclado
-  openKeyboard();
-});
+box.addEventListener("click", openKeyboard);
 
-/* ✅ Borrado extra con teclas del remoto (si las manda).
-   OJO: no bloqueamos números para no romper el IME. */
 document.addEventListener("keydown", (e) => {
   if (submitting) return;
 
+  // OK/Enter: fallback para abrir teclado
+  if (e.key === "Enter") {
+    openKeyboard();
+    return;
+  }
+
+  // ✅ NÚMEROS DEL CONTROL SIN OK
+  // Si el control tiene 0-9, capturamos aunque no esté enfocado.
+  if (e.key >= "0" && e.key <= "9") {
+    // Si el input ya está enfocado, dejamos que el sistema lo maneje (mejor para IME).
+    if (document.activeElement === realInput) return;
+
+    // Si NO está enfocado, hacemos fallback: agregamos nosotros el dígito
+    // (esto permite usar control numérico sin abrir teclado).
+    const current = sanitize(realInput.value);
+    if (current.length >= LEN) return;
+
+    // Evitamos que el número vaya a otro lado
+    e.preventDefault();
+
+    setCode(current + e.key);
+    openKeyboard(); // por si el sistema decide abrir IME al primer número
+    const code = sanitize(realInput.value);
+    if (code.length === LEN) validateAndGo(code);
+    return;
+  }
+
+  // ✅ BORRAR (control / teclado)
   if (e.key === "Backspace" || e.key === "Delete") {
-    // dejar que el input maneje borrado, pero aseguramos render
-    // (algunos remotos no modifican el value si no hay foco)
-    if (document.activeElement !== realInput) openKeyboard();
-    // no preventDefault: el IME/ input debe borrar
-    setTimeout(() => renderFromValue(realInput.value), 0);
+    // Si el input está enfocado, dejamos que borre normal; solo re-render después.
+    if (document.activeElement === realInput) {
+      setTimeout(() => {
+        const code = sanitize(realInput.value);
+        if (realInput.value !== code) realInput.value = code;
+        renderDigits(code);
+      }, 0);
+      return;
+    }
+
+    // Si NO está enfocado, borramos nosotros (fallback remoto)
+    e.preventDefault();
+    const current = sanitize(realInput.value);
+    setCode(current.slice(0, -1));
+    openKeyboard(); // por si el sistema abre IME con interacción
+    return;
   }
 });
 
-/* Inicial */
+// Si vuelve de background / cambia visibilidad, reintentar auto-teclado
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden && !submitting) attemptAutoKeyboard();
+});
+
 window.addEventListener("load", () => {
-  renderFromValue("");
-  // NO auto-focus fuerte: muchos TV Box no abren teclado sin gesto.
-  // Dejamos listo para que con OK/Enter se abra.
+  reset();
+  // ✅ intento automático (si el TV lo permite, aparece solo)
+  attemptAutoKeyboard();
 });
