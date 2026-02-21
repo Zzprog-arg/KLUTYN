@@ -22,6 +22,7 @@
       position:relative;
       display:flex; justify-content:center;
       margin:18px 0 6px 0;
+      border-radius:18px;
     }
     .pin-row{ display:flex; gap:14px; justify-content:center; align-items:center; }
 
@@ -35,7 +36,6 @@
     }
     .pin-digit{ font-size:34px; font-weight:800; transform: translateY(-4px); }
 
-    /* Estado foco (cuando el input está enfocado) */
     .pin-wrap.focused .pin-box{
       border-color:#1f6feb;
       box-shadow: 0 0 0 4px rgba(31,111,235,.25);
@@ -44,12 +44,7 @@
 
     .msg{ margin-top:14px; min-height:22px; text-align:center; font-size:16px; color:#ff6b6b; }
 
-    /*
-      ✅ El input REAL (clave para teclado nativo):
-      - Está EN la misma zona (no fuera de pantalla)
-      - Es "casi" transparente, pero NO 0 (algunos launchers ignoran opacity:0)
-      - Recibe foco con OK/Enter/click
-    */
+    /* Input REAL (para teclado nativo) */
     .real-input{
       position:absolute;
       inset:0;
@@ -59,23 +54,16 @@
       outline:none;
       background:transparent;
 
-      opacity:0.01;            /* NO 0 */
-      color:transparent;        /* que no se vea el texto */
-      caret-color:transparent;  /* que no se vea el cursor */
+      opacity:0.01;            /* NO 0: algunos launchers ignoran 0 */
+      color:transparent;
+      caret-color:transparent;
     }
-
-    /* Para que el contenedor sea navegable con control remoto */
-    .pin-wrap{ border-radius:18px; }
-    .pin-wrap:focus-within { outline:none; }
-
-    /* Tip: si tu launcher necesita “ver” el input, podés subir a 0.08 */
-    /* .real-input{ opacity:0.08; } */
   </style>
 </head>
 <body>
   <div class="box" id="box" tabindex="0">
     <h1>Ingresá tu código</h1>
-    <p>Presioná OK/Enter para abrir el teclado del TV Box y escribí los 4 números. Se enviará automáticamente al completar.</p>
+    <p>Ingresá los 4 números. Si el teclado no aparece solo, probá OK/Enter.</p>
 
     <div class="pin-wrap" id="pinWrap">
       <div class="pin-row" aria-label="Código de 4 dígitos">
@@ -85,7 +73,6 @@
         <div class="pin-box"><div class="pin-digit" id="d3"></div></div>
       </div>
 
-      <!-- ✅ INPUT REAL: esto es lo que hace que Android TV muestre su teclado -->
       <input
         id="realInput"
         class="real-input"
