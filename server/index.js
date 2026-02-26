@@ -270,22 +270,19 @@ app.delete("/api/users/:id", auth(JWT_SECRET), async (req, res) => {
 // =====================
 // IPTV: M3U POR USUARIO/PASS
 // =====================
-app.get("/get/:username/:password/lista.m3u", async (req, res) => {
+app.get("/:username/lista.m3u", async (req, res) => {
   try {
-    const { username, password } = req.params;
+    const { username } = req.params;
     const pool = getPool();
 
     const [rows] = await pool.execute(
-      "SELECT password_hash, expires_at FROM users WHERE username=?",
+      "SELECT expires_at FROM users WHERE username=?",
       [username]
     );
 
     if (rows.length === 0) return res.status(401).send("Usuario invalido");
 
     const user = rows[0];
-    const ok = bcrypt.compareSync(password, user.password_hash);
-    if (!ok) return res.status(401).send("Contrasena incorrecta");
-
     if (Date.now() > Number(user.expires_at)) return res.status(403).send("Cuenta vencida");
 
     const filePath = path.join(process.cwd(), "lista.m3u");

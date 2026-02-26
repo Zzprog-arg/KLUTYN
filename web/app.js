@@ -105,11 +105,7 @@ async function loadUsers() {
     copyLink.className = "smallbtn gray";
     copyLink.textContent = "Copiar link";
     copyLink.onclick = () => {
-      if (!u.password_plain) {
-        toast("Sin contrasena guardada para este usuario");
-        return;
-      }
-      const link = `${location.origin}/get/${u.username}/${u.password_plain}/lista.m3u`;
+      const link = `${location.origin}/${u.username}/lista.m3u`;
       navigator.clipboard.writeText(link).then(() => {
         toast("Link copiado al portapapeles");
       }).catch(() => {
