@@ -106,10 +106,12 @@ async function loadUsers() {
     copyLink.textContent = "Copiar link";
     copyLink.onclick = () => {
       const link = `${location.origin}/${u.username}/lista.m3u`;
-      navigator.clipboard.writeText(link).then(() => {
-        toast("Link copiado al portapapeles");
+      const venc = u.isExpired ? "Vencido" : fmtRemaining(u.remainingMs);
+      const msg = `Usuario: ${u.username}\nCuenta: *${link}*\nVencimiento: ${venc}`;
+      navigator.clipboard.writeText(msg).then(() => {
+        toast("Info copiada al portapapeles");
       }).catch(() => {
-        prompt("Copia este link:", link);
+        prompt("Copia este texto:", msg);
       });
     };
 
