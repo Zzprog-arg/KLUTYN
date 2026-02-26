@@ -859,3 +859,195 @@ https://cdn.sensa.com.ar/bpk-tv/RadioMaria/default/index.mpd?|referer=https://pl
 #KODIPROP:inputstream.adaptive.license_key=24ecaed20225a367ad8fde9b6e826cd6:14dbfc007a3f5648d2c30075f037a830
 #EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36
 https://cdn.sensa.com.ar/live/eds/CanalRural/live_dash_cld/CanalRural.mpd?|referer=https://player.sensa.com.ar/&webtoken=1.0
+
+#SERIESS
+
+
+#EXTINF:-1 tvg-id="" tvg-name="The Art of Telling Lies (2026)" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/bR23eSZSnjYpYpAjbbwecnEROTq.jpg" group-title="2026 Movies",The Art of Telling Lies (2026)
+http://mytvstream.net:8080/movie/TWEk66/036939/261836.mp4
+#EXTINF:-1 tvg-id="" tvg-name="The Housemaid (2025)" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/jHyir7bVDhZm90qxUhXHTO7BvyA.jpg" group-title="2026 Movies",The Housemaid (2025)
+http://mytvstream.net:8080/movie/TWEk66/036939/261837.mp4
+#EXTINF:-1 tvg-id="" tvg-name="Twisted (2026)" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/rF6txsM6cgF9vg6Ra5sNbkvUwrw.jpg" group-title="2026 Movies",Twisted (2026)
+http://mytvstream.net:8080/movie/TWEk66/036939/261838.mp4
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S01 E01" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/9w27Lgeq8KVxhz4ysygT6ranxf1.jpg" group-title="Series",Black Mirror S01 E01
+http://mytvstream.net:8080/series/TWEk66/036939/190320.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S01 E02" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/c62HKSbeTRkatK223O3m58CmmPd.jpg" group-title="Series",Black Mirror S01 E02
+http://mytvstream.net:8080/series/TWEk66/036939/190321.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S01 E03" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/lhZmmQ6HSIYCo4Rxe6pmHMvkJE6.jpg" group-title="Series",Black Mirror S01 E03
+http://mytvstream.net:8080/series/TWEk66/036939/190322.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S02 E01" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/ltgvZMI9y73GOlBqoOFiXlot87V.jpg" group-title="Series",Black Mirror S02 E01
+http://mytvstream.net:8080/series/TWEk66/036939/190323.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S02 E02" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/iS34hF0GMqwry7gJtDoH29r5YVv.jpg" group-title="Series",Black Mirror S02 E02
+http://mytvstream.net:8080/series/TWEk66/036939/190324.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S02 E03" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/hSEwesgbIQWoMucQdc55c4qaAQM.jpg" group-title="Series",Black Mirror S02 E03
+http://mytvstream.net:8080/series/TWEk66/036939/190325.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S03 E01" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/dmEDQliQbapSOcbdu0c2KtmIVna.jpg" group-title="Series",Black Mirror S03 E01
+http://mytvstream.net:8080/series/TWEk66/036939/190326.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S03 E02" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/v0zfbxuUnQ4YQ3hkRq7EvFsEKQN.jpg" group-title="Series",Black Mirror S03 E02
+http://mytvstream.net:8080/series/TWEk66/036939/190327.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S03 E03" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/MU0lsD08pcuwaYMGOQMFGFWJGg.jpg" group-title="Series",Black Mirror S03 E03
+http://mytvstream.net:8080/series/TWEk66/036939/190328.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S03 E04" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/AfKQ9bm4RVTwyKdE2QfLDGrtVTu.jpg" group-title="Series",Black Mirror S03 E04
+http://mytvstream.net:8080/series/TWEk66/036939/190329.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S03 E05" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/A4g3nH0kYQpqHv1oHBXuTgRgT5u.jpg" group-title="Series",Black Mirror S03 E05
+http://mytvstream.net:8080/series/TWEk66/036939/190330.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S03 E06" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/sBrdKKIMwdiFj5Xx8NRzLxqfVkX.jpg" group-title="Series",Black Mirror S03 E06
+http://mytvstream.net:8080/series/TWEk66/036939/190331.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S04 E01" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/dagpqvCO48XDFCUe7I2SYCuXCA1.jpg" group-title="Series",Black Mirror S04 E01
+http://mytvstream.net:8080/series/TWEk66/036939/190332.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S04 E02" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/3uXHGkHO5B9icYTxyVRDXoxDldR.jpg" group-title="Series",Black Mirror S04 E02
+http://mytvstream.net:8080/series/TWEk66/036939/190333.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S04 E03" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/mvNCd4qfwtdXeRHgvWHRRPUA1TF.jpg" group-title="Series",Black Mirror S04 E03
+http://mytvstream.net:8080/series/TWEk66/036939/190334.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S04 E04" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/xvdqaFVz8f8BWZS0ip0Fjr4Eqmt.jpg" group-title="Series",Black Mirror S04 E04
+http://mytvstream.net:8080/series/TWEk66/036939/190335.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S04 E05" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/8mMSk4cGfIftbIoA2Mq83LpzYlw.jpg" group-title="Series",Black Mirror S04 E05
+http://mytvstream.net:8080/series/TWEk66/036939/190336.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S04 E06" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/fOKwBPMBSm1B6zc3wkN4hCkbtsf.jpg" group-title="Series",Black Mirror S04 E06
+http://mytvstream.net:8080/series/TWEk66/036939/190337.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S05 E01" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/t8uIVDjfCoutXHwIRZoUX8XpNS2.jpg" group-title="Series",Black Mirror S05 E01
+http://mytvstream.net:8080/series/TWEk66/036939/190338.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S05 E02" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/wOvJYn5p1dfjL4zNgZuMMhT0KPE.jpg" group-title="Series",Black Mirror S05 E02
+http://mytvstream.net:8080/series/TWEk66/036939/190339.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S05 E03" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/uwLkdgvIT7hvJD2k9FMdiA8MpVX.jpg" group-title="Series",Black Mirror S05 E03
+http://mytvstream.net:8080/series/TWEk66/036939/190340.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S06 E01" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/7cB4EIsn2eSP26t0ta8a9szWVZE.jpg" group-title="Series",Black Mirror S06 E01
+http://mytvstream.net:8080/series/TWEk66/036939/188994.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S06 E02" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/dA9ZWi2Q172vYUVxhKPTarJeDLj.jpg" group-title="Series",Black Mirror S06 E02
+http://mytvstream.net:8080/series/TWEk66/036939/188995.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S06 E03" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/1I3oE47FZwSuQWYP02d9rSCaQpq.jpg" group-title="Series",Black Mirror S06 E03
+http://mytvstream.net:8080/series/TWEk66/036939/188996.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S06 E04" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/8v4OZ4O0P4MZu59lWqOb1BZGrB4.jpg" group-title="Series",Black Mirror S06 E04
+http://mytvstream.net:8080/series/TWEk66/036939/188997.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Black Mirror S06 E05" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/6lGVCSv4DfQqgjqauSxM4HmfvKS.jpg" group-title="Series",Black Mirror S06 E05
+http://mytvstream.net:8080/series/TWEk66/036939/188998.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S01 E01" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/2VirUdEBO4CCDmjqJsf8ipU0Mxl.jpg" group-title="Series",Hightown S01 E01
+http://mytvstream.net:8080/series/TWEk66/036939/192148.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S01 E02" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/iSilEhUWCk1X0Hu79u72ff2qViL.jpg" group-title="Series",Hightown S01 E02
+http://mytvstream.net:8080/series/TWEk66/036939/192149.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S01 E03" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/nnGpg3MWbXMGze2gzfPQVHzo7sr.jpg" group-title="Series",Hightown S01 E03
+http://mytvstream.net:8080/series/TWEk66/036939/192150.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S01 E04" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/rIpIWJByKrkXXAETLLwv2fQzXwV.jpg" group-title="Series",Hightown S01 E04
+http://mytvstream.net:8080/series/TWEk66/036939/192151.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S01 E05" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/qOuuD48DkCyj2q6GrnDie7HZd30.jpg" group-title="Series",Hightown S01 E05
+http://mytvstream.net:8080/series/TWEk66/036939/192152.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S01 E06" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/8NgiCb0u6nMdox5vdWAJ2ycILaf.jpg" group-title="Series",Hightown S01 E06
+http://mytvstream.net:8080/series/TWEk66/036939/192153.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S01 E07" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/kgNip1ehsIclpCd9sFiS3j7bOSf.jpg" group-title="Series",Hightown S01 E07
+http://mytvstream.net:8080/series/TWEk66/036939/192154.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S01 E08" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/o21KcKBWq57TEQN6DpqJJsUdYNj.jpg" group-title="Series",Hightown S01 E08
+http://mytvstream.net:8080/series/TWEk66/036939/192155.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S02 E01" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/tisDX3QwNuOi1rFVaQaGwH7QfTx.jpg" group-title="Series",Hightown S02 E01
+http://mytvstream.net:8080/series/TWEk66/036939/192156.mp4
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S02 E02" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/wQLqc6w5OOyy9fLKi00RbYOYCta.jpg" group-title="Series",Hightown S02 E02
+http://mytvstream.net:8080/series/TWEk66/036939/192157.mp4
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S02 E03" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/s8WErNwzxzJJrrA7ZK2dYnUpnul.jpg" group-title="Series",Hightown S02 E03
+http://mytvstream.net:8080/series/TWEk66/036939/192158.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S02 E04" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/kHzA4XDdYr7J0OzK4QUaBWACKhz.jpg" group-title="Series",Hightown S02 E04
+http://mytvstream.net:8080/series/TWEk66/036939/192159.mp4
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S02 E05" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/fCVJyWp96JUh6ml5P4MQ9rIcZdP.jpg" group-title="Series",Hightown S02 E05
+http://mytvstream.net:8080/series/TWEk66/036939/192160.mp4
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S02 E06" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/gFzSdSmF1ng0J2baleiCV3c1H0o.jpg" group-title="Series",Hightown S02 E06
+http://mytvstream.net:8080/series/TWEk66/036939/192161.mp4
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S02 E07" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/iiz3Zrl7843ENH3RJWYEbmY2lWw.jpg" group-title="Series",Hightown S02 E07
+http://mytvstream.net:8080/series/TWEk66/036939/192162.mp4
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S02 E08" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/ypALw43Y37enI8HOzFx8Y99nviB.jpg" group-title="Series",Hightown S02 E08
+http://mytvstream.net:8080/series/TWEk66/036939/192163.mp4
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S02 E09" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/7HUo6hHYIAHEVsQuu7lArZGrRXT.jpg" group-title="Series",Hightown S02 E09
+http://mytvstream.net:8080/series/TWEk66/036939/192164.mp4
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S02 E10" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/wmZtiYXoA0ZSHmx4nBiVhi0YpXe.jpg" group-title="Series",Hightown S02 E10
+http://mytvstream.net:8080/series/TWEk66/036939/192165.mp4
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S03 E01" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/rQ0knpjeQntdqbOwN9vxithexEa.jpg" group-title="Series",Hightown S03 E01
+http://mytvstream.net:8080/series/TWEk66/036939/213635.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S03 E02" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/72m22pRT9nDPiaQgYqpRezWKAi0.jpg" group-title="Series",Hightown S03 E02
+http://mytvstream.net:8080/series/TWEk66/036939/213636.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S03 E03" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/wsrfzfFySeLPSlgBlR6vju2Au0G.jpg" group-title="Series",Hightown S03 E03
+http://mytvstream.net:8080/series/TWEk66/036939/213637.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S03 E04" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/em90NmqjumzBQtkKYYbpIrW7UBc.jpg" group-title="Series",Hightown S03 E04
+http://mytvstream.net:8080/series/TWEk66/036939/213638.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S03 E05" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/aLjnyPvpIerhuAXPpDNECIV2Q91.jpg" group-title="Series",Hightown S03 E05
+http://mytvstream.net:8080/series/TWEk66/036939/213639.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S03 E06" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/5sMfg4cp4cbe3juYSEgg3FZZO7e.jpg" group-title="Series",Hightown S03 E06
+http://mytvstream.net:8080/series/TWEk66/036939/214532.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Hightown S03 E07" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/jNDAbQl7C6ffQg53MKE8k1hCNtu.jpg" group-title="Series",Hightown S03 E07
+http://mytvstream.net:8080/series/TWEk66/036939/214533.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S01 E01" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/6knKgEZVPoDTOMDuqPIA5qsAGz4.jpg" group-title="Series",Insecure S01 E01
+http://mytvstream.net:8080/series/TWEk66/036939/192333.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S01 E02" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/kzZwIfVDWGtClQejE00sZjgwtDX.jpg" group-title="Series",Insecure S01 E02
+http://mytvstream.net:8080/series/TWEk66/036939/192334.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S01 E03" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/nlFN4u7PVpYnDBkV4TtnGu1p2HX.jpg" group-title="Series",Insecure S01 E03
+http://mytvstream.net:8080/series/TWEk66/036939/192335.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S01 E04" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/zupXlDCvndW87ICD1kYqXHxQCZl.jpg" group-title="Series",Insecure S01 E04
+http://mytvstream.net:8080/series/TWEk66/036939/192336.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S01 E05" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/sHSY4fmfHKlDbPcYTfpQdRejqpy.jpg" group-title="Series",Insecure S01 E05
+http://mytvstream.net:8080/series/TWEk66/036939/192337.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S01 E06" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/92jsgqxLNiKaSPer0oJBTTjmsSP.jpg" group-title="Series",Insecure S01 E06
+http://mytvstream.net:8080/series/TWEk66/036939/192338.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S01 E07" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/hmHwOOjOpRoqcSnidFkGAE9tFlL.jpg" group-title="Series",Insecure S01 E07
+http://mytvstream.net:8080/series/TWEk66/036939/192339.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S01 E08" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/1rNL3Xobcd2pOva3DvmcWL5Wgsv.jpg" group-title="Series",Insecure S01 E08
+http://mytvstream.net:8080/series/TWEk66/036939/192340.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S02 E01" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/vRm6dtXxByeEgvjiBRIQe2SSm3o.jpg" group-title="Series",Insecure S02 E01
+http://mytvstream.net:8080/series/TWEk66/036939/192341.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S02 E02" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/u1wVg59rrlr20BbcPK24ZfF19L2.jpg" group-title="Series",Insecure S02 E02
+http://mytvstream.net:8080/series/TWEk66/036939/192342.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S02 E03" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/sZ7QNJdKTcAym07fI6TWSJPYeLd.jpg" group-title="Series",Insecure S02 E03
+http://mytvstream.net:8080/series/TWEk66/036939/192343.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S02 E04" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/cM1dESHuRbBs2Rtg1lctRGp0Hpi.jpg" group-title="Series",Insecure S02 E04
+http://mytvstream.net:8080/series/TWEk66/036939/192344.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S02 E05" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/v8cfFIUPjenNq1NwIlM7Pq0QFG.jpg" group-title="Series",Insecure S02 E05
+http://mytvstream.net:8080/series/TWEk66/036939/192345.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S02 E06" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/zcifEXv2ZotmCLoLV68kVmNqNHf.jpg" group-title="Series",Insecure S02 E06
+http://mytvstream.net:8080/series/TWEk66/036939/192346.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S02 E07" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/t41Xd6YvQsagl7TVaWMto5Y783V.jpg" group-title="Series",Insecure S02 E07
+http://mytvstream.net:8080/series/TWEk66/036939/192347.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S02 E08" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/zo0tQSTefs988ZZlbP4ZRlBF0EE.jpg" group-title="Series",Insecure S02 E08
+http://mytvstream.net:8080/series/TWEk66/036939/192348.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S03 E01" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/pWD0oXXfXMfMf4Yk2AnUW6Kt0mq.jpg" group-title="Series",Insecure S03 E01
+http://mytvstream.net:8080/series/TWEk66/036939/192349.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S03 E02" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/y9WeM6guq7q1crso6Jc7phpsKlv.jpg" group-title="Series",Insecure S03 E02
+http://mytvstream.net:8080/series/TWEk66/036939/192350.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S03 E03" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/luFTVbNXUkR8q32LmO8qmAkH1i6.jpg" group-title="Series",Insecure S03 E03
+http://mytvstream.net:8080/series/TWEk66/036939/192351.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S03 E04" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/pEj85CgyEgivBKunFt8inkGsZga.jpg" group-title="Series",Insecure S03 E04
+http://mytvstream.net:8080/series/TWEk66/036939/192352.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S03 E05" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/v2yDtyFwkays0zAt797Cn6SRlvj.jpg" group-title="Series",Insecure S03 E05
+http://mytvstream.net:8080/series/TWEk66/036939/192353.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S03 E06" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/b1pFkqFmR3CgDATzweXvaDRcXzn.jpg" group-title="Series",Insecure S03 E06
+http://mytvstream.net:8080/series/TWEk66/036939/192354.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S03 E07" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/1ZnHpQRpwGicX5YYrw72kJyslt.jpg" group-title="Series",Insecure S03 E07
+http://mytvstream.net:8080/series/TWEk66/036939/192355.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S03 E08" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/yyM4H2YGXlQdTh9qf46vmsVWiJk.jpg" group-title="Series",Insecure S03 E08
+http://mytvstream.net:8080/series/TWEk66/036939/192356.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S04 E01" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/5GpIhhHf9gqUC85Np6xA5GQFOht.jpg" group-title="Series",Insecure S04 E01
+http://mytvstream.net:8080/series/TWEk66/036939/192357.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S04 E02" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/ghV9kDh0O2Yv5ur6ZUhdUwg2k2z.jpg" group-title="Series",Insecure S04 E02
+http://mytvstream.net:8080/series/TWEk66/036939/192358.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S04 E03" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/iyzQvoPUVffTCvccWtWWHnlyH6L.jpg" group-title="Series",Insecure S04 E03
+http://mytvstream.net:8080/series/TWEk66/036939/192359.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S04 E04" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/wOCtAqiZovNYGWPbszEEDANp9BM.jpg" group-title="Series",Insecure S04 E04
+http://mytvstream.net:8080/series/TWEk66/036939/192360.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S04 E05" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/tQcJhNlmT962kk0fjK5IQHTJsIG.jpg" group-title="Series",Insecure S04 E05
+http://mytvstream.net:8080/series/TWEk66/036939/192361.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S04 E06" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/d2OBAMVuvOQi2464MDH7DtFJrpI.jpg" group-title="Series",Insecure S04 E06
+http://mytvstream.net:8080/series/TWEk66/036939/192362.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S04 E07" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/jatGWtJ1CQR5sk5ZGIjJ5OFcqt4.jpg" group-title="Series",Insecure S04 E07
+http://mytvstream.net:8080/series/TWEk66/036939/192363.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S04 E08" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/lN4Z943lNZ92Lx8XtppbEbzfrEe.jpg" group-title="Series",Insecure S04 E08
+http://mytvstream.net:8080/series/TWEk66/036939/192364.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S04 E09" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/e0AkMCQ0XqqXTZ8hzL0RXtVzn4V.jpg" group-title="Series",Insecure S04 E09
+http://mytvstream.net:8080/series/TWEk66/036939/192365.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S04 E10" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/1PF6yFYBW1JHMIMQFJQ9GMWSVdq.jpg" group-title="Series",Insecure S04 E10
+http://mytvstream.net:8080/series/TWEk66/036939/192366.mkv
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S05 E01" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/86C8Zkj8RppTUYWKOE58PByGojX.jpg" group-title="Series",Insecure S05 E01
+http://mytvstream.net:8080/series/TWEk66/036939/192367.mp4
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S05 E02" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/22q1df2A80kbvz0LgCq7ddhNt6c.jpg" group-title="Series",Insecure S05 E02
+http://mytvstream.net:8080/series/TWEk66/036939/192368.mp4
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S05 E03" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/kHnaIKMR21CxiJo5dRMuTAyMewL.jpg" group-title="Series",Insecure S05 E03
+http://mytvstream.net:8080/series/TWEk66/036939/192369.mp4
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S05 E04" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/gI7b15DSruX6HyRkIQWUoO3A1Zj.jpg" group-title="Series",Insecure S05 E04
+http://mytvstream.net:8080/series/TWEk66/036939/192370.mp4
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S05 E05" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/eZBLnOp7ot3ODTS2CctHjpjiUy2.jpg" group-title="Series",Insecure S05 E05
+http://mytvstream.net:8080/series/TWEk66/036939/192371.mp4
+#EXTINF:-1 tvg-id="" tvg-name="Insecure S05 E06" tvg-logo="https://image.tmdb.org/t/p/w600_and_h900_bestv2/lN1QNvXswRT0mqzRQZbtPkdoKOC.jpg" group-title="Series",Insecure S05 E06
+http://mytvstream.net:8080/series/TWEk66/036939/192372.mp4
