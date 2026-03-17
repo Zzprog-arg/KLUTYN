@@ -1,0 +1,645 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Panel Flow</title>
+  <style>
+    :root { color-scheme: dark; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b0f17;
+      color: #e8eefc;
+    }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: #111827;
+      border-bottom: 1px solid #243252;
+      padding: 12px 18px;
+    }
+    .brand {
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    nav button {
+      border: 1px solid #2a3a60;
+      background: #172033;
+      color: #dbeafe;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    nav button.active {
+      background: #2563eb;
+      border-color: #2563eb;
+      color: white;
+    }
+    main {
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+    .card {
+      background: #111a2d;
+      border: 1px solid #243252;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    h2, h3 {
+      margin-top: 0;
+    }
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+    @media (min-width: 960px) {
+      .grid-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 6px;
+      color: #bfd0ff;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #2a3a60;
+      background: #0d1426;
+      color: #e8eefc;
+    }
+    textarea { min-height: 200px; resize: vertical; }
+    .btn {
+      margin-top: 14px;
+      border: 0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      background: #2563eb;
+      color: white;
+      cursor: pointer;
+    }
+    .btn2 {
+      display: inline-block;
+      margin-right: 8px;
+      margin-top: 8px;
+      border: 1px solid #2a3a60;
+      border-radius: 10px;
+      padding: 10px 14px;
+      background: #172033;
+      color: #dbeafe;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .danger {
+      background: #3a1212;
+      border-color: #6b2222;
+      color: #ffd8d8;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #0d1426;
+      border: 1px solid #243252;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    th, td {
+      text-align: left;
+      padding: 10px;
+      border-bottom: 1px solid #1f2a44;
+      vertical-align: top;
+    }
+    tr:hover td {
+      background: #101a2f;
+    }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      border: 1px solid #334155;
+      background: #172033;
+    }
+    .green { background: #122a1b; border-color: #2a7a4a; }
+    .yellow { background: #2a2512; border-color: #7a6a2a; }
+    .red { background: #2a1212; border-color: #7a2a2a; }
+    .ok, .error {
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+    .ok {
+      background: #0f2a1a;
+      border: 1px solid #1d6b3d;
+      color: #bdf4cf;
+    }
+    .error {
+      background: #2b1230;
+      border: 1px solid #6a1b7a;
+      color: #ffd1ff;
+    }
+    .muted {
+      color: #9eb1d9;
+    }
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .summary {
+      display: grid;
+      gap: 12px;
+    }
+    @media (min-width: 900px) {
+      .summary {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+    .summary .item {
+      background: #0d1426;
+      border: 1px solid #243252;
+      border-radius: 12px;
+      padding: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">Panel Flow</div>
+    <nav id="nav"></nav>
+  </header>
+
+  <main>
+    <div id="messages"></div>
+    <div id="app"></div>
+  </main>
+
+  <script>
+    const app = document.getElementById("app");
+    const nav = document.getElementById("nav");
+    const messages = document.getElementById("messages");
+
+    const state = {
+      page: "home",
+      selectedClientId: null
+    };
+
+    const pages = [
+      { id: "home", label: "Inicio" },
+      { id: "flow", label: "Cuentas Flow" },
+      { id: "flow_import", label: "Cargar Flow" },
+      { id: "create_client", label: "Crear Cliente" },
+      { id: "clients", label: "Ver Cuentas" }
+    ];
+
+    function showMsg(type, text) {
+      messages.innerHTML = `<div class="${type}">${escapeHtml(text)}</div>`;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function clearMsg() {
+      messages.innerHTML = "";
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    async function api(url, options = {}) {
+      const res = await fetch(url, {
+        headers: { "Content-Type": "application/json" },
+        ...options
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok) {
+        throw new Error(data.error || "Error inesperado");
+      }
+
+      return data;
+    }
+
+    function badge(text, cls) {
+      return `<span class="badge ${cls}">${escapeHtml(text)}</span>`;
+    }
+
+    function renderNav() {
+      nav.innerHTML = pages.map(p => `
+        <button class="${state.page === p.id ? "active" : ""}" onclick="goPage('${p.id}')">
+          ${escapeHtml(p.label)}
+        </button>
+      `).join("");
+    }
+
+    async function goPage(page, clientId = null) {
+      state.page = page;
+      state.selectedClientId = clientId;
+      renderNav();
+      clearMsg();
+
+      if (page === "home") return renderHome();
+      if (page === "flow") return renderFlow();
+      if (page === "flow_import") return renderFlowImport();
+      if (page === "create_client") return renderCreateClient();
+      if (page === "clients") return renderClients();
+      if (page === "view_client") return renderClientView(clientId);
+    }
+
+    async function renderHome() {
+      app.innerHTML = `<div class="card">Cargando...</div>`;
+      try {
+        const data = await api("/api/dashboard");
+        app.innerHTML = `
+          <div class="card">
+            <h2>Resumen</h2>
+            <div class="summary">
+              <div class="item"><div class="muted">Flow activas</div><h2>${data.flow}</h2></div>
+              <div class="item"><div class="muted">Clientes</div><h2>${data.clients}</h2></div>
+              <div class="item"><div class="muted">Activos</div><h2>${data.active}</h2></div>
+              <div class="item"><div class="muted">Vencidos</div><h2>${data.expired}</h2></div>
+            </div>
+          </div>
+        `;
+      } catch (e) {
+        showMsg("error", e.message);
+      }
+    }
+
+    async function deleteFlow(id, usedSlots) {
+      let okDelete = true;
+
+      if (Number(usedSlots) > 0) {
+        okDelete = confirm("Seguro que desea eliminar esta cuenta tiene 1 o mas dispositivos corriendo");
+      } else {
+        okDelete = confirm("¿Eliminar cuenta Flow?");
+      }
+
+      if (!okDelete) return;
+
+      try {
+        await api(`/api/flow/${id}`, { method: "DELETE" });
+        showMsg("ok", "Cuenta Flow eliminada");
+        renderFlow();
+      } catch (err) {
+        showMsg("error", err.message);
+      }
+    }
+
+    async function deleteClient(id) {
+      const okDelete = confirm("¿Eliminar cuenta cliente?");
+      if (!okDelete) return;
+
+      try {
+        await api(`/api/clients/${id}`, { method: "DELETE" });
+        showMsg("ok", "Cuenta cliente eliminada");
+        renderClients();
+      } catch (err) {
+        showMsg("error", err.message);
+      }
+    }
+
+    async function renderFlow() {
+      app.innerHTML = `<div class="card">Cargando...</div>`;
+      try {
+        const rows = await api("/api/flow");
+        app.innerHTML = `
+          <div class="grid grid-2">
+            <div class="card">
+              <h2>Agregar cuenta Flow</h2>
+              <form id="flowForm">
+                <label>Usuario Flow</label>
+                <input name="flow_user" required>
+
+                <label>Contraseña Flow</label>
+                <input name="flow_pass" required>
+
+                <label>Nota</label>
+                <input name="note">
+
+                <button class="btn" type="submit">Guardar</button>
+              </form>
+            </div>
+
+            <div class="card">
+              <h2>Listado</h2>
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Usuario</th>
+                    <th>Ocupación</th>
+                    <th>Nota</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rows.map(r => `
+                    <tr>
+                      <td>${r.id}</td>
+                      <td>${escapeHtml(r.flow_user)}</td>
+                      <td>${r.used_slots >= 2 ? badge("Sin disp.", "red") : badge(`${r.used_slots}/2`, "green")}</td>
+                      <td>${escapeHtml(r.note || "")}</td>
+                      <td>
+                        <button class="btn2 danger" onclick="deleteFlow(${r.id}, ${r.used_slots})">Eliminar</button>
+                      </td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+
+        document.getElementById("flowForm").onsubmit = async (e) => {
+          e.preventDefault();
+          const fd = new FormData(e.target);
+          try {
+            await api("/api/flow", {
+              method: "POST",
+              body: JSON.stringify({
+                flow_user: fd.get("flow_user"),
+                flow_pass: fd.get("flow_pass"),
+                note: fd.get("note")
+              })
+            });
+            showMsg("ok", "Cuenta Flow guardada");
+            renderFlow();
+          } catch (err) {
+            showMsg("error", err.message);
+          }
+        };
+      } catch (e) {
+        showMsg("error", e.message);
+      }
+    }
+
+    async function renderFlowImport() {
+      app.innerHTML = `
+        <div class="card">
+          <h2>Cargar cuentas Flow (bulk)</h2>
+          <p class="muted">Formato: usuario|password|nota opcional</p>
+          <form id="importForm">
+            <label>Pegar líneas</label>
+            <textarea name="bulk"></textarea>
+            <button class="btn" type="submit">Importar</button>
+          </form>
+        </div>
+      `;
+
+      document.getElementById("importForm").onsubmit = async (e) => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        try {
+          const data = await api("/api/flow/import", {
+            method: "POST",
+            body: JSON.stringify({ bulk: fd.get("bulk") })
+          });
+          showMsg("ok", `Importadas: ${data.ok} · Fallidas/duplicadas: ${data.fail}`);
+        } catch (err) {
+          showMsg("error", err.message);
+        }
+      };
+    }
+
+    async function renderCreateClient() {
+      app.innerHTML = `<div class="card">Cargando...</div>`;
+      try {
+        const flow = await api("/api/flow/available");
+
+        app.innerHTML = `
+          <div class="card">
+            <h2>Crear cuenta de cliente</h2>
+            <form id="clientForm">
+              <label>Nombre cliente</label>
+              <input name="client_name" required>
+
+              <label>Teléfono</label>
+              <input name="phone">
+
+              <label>Vencimiento (días, máx 31)</label>
+              <input name="days" type="number" min="1" max="31" value="30" required>
+
+              <label>Cuenta Flow disponible</label>
+              <select name="flow_account_id" required>
+                <option value="">-- Elegir --</option>
+                ${flow.map(f => `
+                  <option value="${f.id}">
+                    ${escapeHtml(f.flow_user)} (${f.used_slots}/2)
+                  </option>
+                `).join("")}
+              </select>
+
+              <label>Dispositivo</label>
+              <input name="device_label" value="Disp 1">
+
+              <button class="btn" type="submit">Crear</button>
+            </form>
+          </div>
+        `;
+
+        document.getElementById("clientForm").onsubmit = async (e) => {
+          e.preventDefault();
+          const fd = new FormData(e.target);
+
+          try {
+            await api("/api/clients", {
+              method: "POST",
+              body: JSON.stringify({
+                client_name: fd.get("client_name"),
+                phone: fd.get("phone"),
+                days: fd.get("days"),
+                flow_account_id: fd.get("flow_account_id"),
+                device_label: fd.get("device_label")
+              })
+            });
+            showMsg("ok", "Cliente creado");
+            goPage("clients");
+          } catch (err) {
+            showMsg("error", err.message);
+          }
+        };
+      } catch (e) {
+        showMsg("error", e.message);
+      }
+    }
+
+    async function renderClients() {
+      app.innerHTML = `<div class="card">Cargando...</div>`;
+      try {
+        const data = await api("/api/clients");
+
+        const renderTable = (title, items, type) => `
+          <div class="card">
+            <h2>${title}</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th>Estado</th>
+                  <th>Cliente</th>
+                  <th>Tel</th>
+                  <th>Vence</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                ${items.map(c => `
+                  <tr>
+                    <td>${type === "run" ? badge("Corriendo", "green") : type === "warn" ? badge("Por vencer", "yellow") : badge("Vencida", "red")}</td>
+                    <td>${escapeHtml(c.client_name)}</td>
+                    <td>${escapeHtml(c.phone || "")}</td>
+                    <td>${escapeHtml(c.expires_at)}</td>
+                    <td>
+                      <button class="btn2" onclick="goPage('view_client', ${c.id})">Ver</button>
+                      <button class="btn2 danger" onclick="deleteClient(${c.id})">Eliminar</button>
+                    </td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        `;
+
+        app.innerHTML = `
+          ${renderTable("Cuentas corriendo", data.running, "run")}
+          ${renderTable("Cuentas por vencer", data.warning, "warn")}
+          ${renderTable("Cuentas vencidas", data.expired, "exp")}
+        `;
+      } catch (e) {
+        showMsg("error", e.message);
+      }
+    }
+
+    async function renderClientView(id) {
+      app.innerHTML = `<div class="card">Cargando...</div>`;
+      try {
+        const data = await api(`/api/clients/${id}`);
+        const c = data.client;
+
+        app.innerHTML = `
+          <div class="card">
+            <h2>Detalle</h2>
+            <p><b>Cliente:</b> ${escapeHtml(c.client_name)}</p>
+            <p><b>Tel:</b> ${escapeHtml(c.phone || "")}</p>
+            <p><b>Creación:</b> ${escapeHtml(c.created_at)}</p>
+            <p><b>Vence:</b> ${escapeHtml(c.expires_at)}</p>
+            <p><b>Estado:</b> ${c.status === "active" ? badge("Activo", "green") : badge("Vencido", "red")}</p>
+
+            <h3>Cuenta Flow / Dispositivos</h3>
+            <table>
+              <thead>
+                <tr>
+                  <th>Dispositivo</th>
+                  <th>Flow user</th>
+                  <th>Flow pass</th>
+                  <th>Asignado</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${data.assignments.map(a => `
+                  <tr>
+                    <td>${escapeHtml(a.device_label || "")}</td>
+                    <td>${escapeHtml(a.flow_user)}</td>
+                    <td>${escapeHtml(a.flow_pass)}</td>
+                    <td>${escapeHtml(a.assigned_at)}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+
+            ${data.canAddDevice ? `
+              <form id="deviceForm">
+                <label>Agregar 2do dispositivo</label>
+                <input name="device_label" value="Disp 2">
+                <button class="btn" type="submit">Agregar</button>
+              </form>
+            ` : `
+              <p>
+                ${c.status !== "active"
+                  ? badge("Vencida", "red") + " No se agregan dispositivos."
+                  : badge("Sin disp.", "red") + " Cuenta Flow ocupada (2/2)."}
+              </p>
+            `}
+
+            <div class="actions">
+              ${c.status === "active" ? `<button class="btn2" id="extendBtn">Añadir 1 mes</button>` : ``}
+              <button class="btn2 danger" id="deleteBtn">Eliminar cuenta cliente</button>
+              <button class="btn2" onclick="goPage('clients')">Volver</button>
+            </div>
+          </div>
+        `;
+
+        const deviceForm = document.getElementById("deviceForm");
+        if (deviceForm) {
+          deviceForm.onsubmit = async (e) => {
+            e.preventDefault();
+            const fd = new FormData(e.target);
+            try {
+              await api(`/api/clients/${id}/device`, {
+                method: "POST",
+                body: JSON.stringify({
+                  device_label: fd.get("device_label")
+                })
+              });
+              showMsg("ok", "Dispositivo agregado");
+              renderClientView(id);
+            } catch (err) {
+              showMsg("error", err.message);
+            }
+          };
+        }
+
+        const extendBtn = document.getElementById("extendBtn");
+        if (extendBtn) {
+          extendBtn.onclick = async () => {
+            try {
+              await api(`/api/clients/${id}/extend`, { method: "POST" });
+              showMsg("ok", "Cliente extendido 30 días");
+              renderClientView(id);
+            } catch (err) {
+              showMsg("error", err.message);
+            }
+          };
+        }
+
+        const deleteBtn = document.getElementById("deleteBtn");
+        if (deleteBtn) {
+          deleteBtn.onclick = async () => {
+            if (!confirm("¿Eliminar cuenta cliente?")) return;
+            try {
+              await api(`/api/clients/${id}`, { method: "DELETE" });
+              showMsg("ok", "Cliente eliminado");
+              goPage("clients");
+            } catch (err) {
+              showMsg("error", err.message);
+            }
+          };
+        }
+      } catch (e) {
+        showMsg("error", e.message);
+      }
+    }
+
+    goPage("home");
+  </script>
+</body>
+</html>
